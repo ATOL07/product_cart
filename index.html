@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="script.js" defer></script>
+</head>
+<body class="bg-gray-100">
+
+<!-- Navbar -->
+<nav class="bg-blue-600 text-white p-4 fixed top-0 left-0 w-full z-30">
+    <div class="container mx-auto flex justify-between items-center">
+        <h1 class="text-2xl font-semibold">Shopping Cart</h1>
+        <div>
+            <a href="#" class="px-4">Home</a>
+            <a href="#" class="px-4">Products</a>
+            <a href="#" class="px-4">About</a>
+            <a href="#" class="px-4">Contact</a>
+        </div>
+    </div>
+</nav>
+
+<div class="bg-white shadow-md mt-16 py-4">
+    <div class="flex justify-center">
+    <h2 class="text-2xl font-semibold text-gray-800">Available Products</h2>
+</div>
+
+</div>
+
+
+<!-- Product Grid -->
+<div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 p-4 mt-20">
+    <!-- Products will be loaded here dynamically -->
+</div>
+
+<!-- Pagination -->
+<div id="pagination" class="flex justify-center space-x-4 p-4">
+    <!-- Pagination buttons will be added here dynamically -->
+</div>
+
+<!-- Cart Sidebar -->
+<div id="cartSidebar" class="fixed right-0 top-0 bg-white w-0 h-full shadow-lg transition-all transform ease-in-out duration-300 overflow-y-auto z-40">
+    <div class="p-4">
+        <h2 class="text-2xl font-semibold">Your added Products</h2>
+        <ul id="cartItems" class="mt-4">
+            <!-- Cart items will be listed here -->
+        </ul>
+        <div class="mt-4">
+            <p>Your Cart</p>
+            <p>Item Count: <span id="itemCount">0</span></p>
+            <p>Subtotal: $<span id="subtotalPrice">0.00</span></p>
+            <p>VAT (10%): $<span id="vat">0.00</span></p>
+            <p>Total: $<span id="total">0.00</span></p>
+            <button class="bg-orange-600 text-white px-4 py-2 mt-4 rounded-lg w-full" onclick="checkout()">Checkout</button>
+        </div>
+    </div>
+</div>
+
+<!-- Cart Toggle Button (Top-left) -->
+<button onclick="toggleCart()" class="bg-orange-600 text-white px-4 py-2 fixed top-12 left-4 rounded-full z-50">Cart</button>
+
+<!-- Toast Notification (Top-center) -->
+<div id="toast" class="fixed top-0 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-lg hidden z-50">
+    Item added to cart
+</div>
+
+</body>
+</html>
