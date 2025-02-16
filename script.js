@@ -7,6 +7,8 @@ let total = 0;
 let currentPage = 1;
 const productsPerPage = 15; // 15 products per page
 let allProducts = []; // Store all products fetched from the API
+let discount = 0; // Track discount amount
+let appliedPromoCode = null; // Track applied promo code
 
 // Fetch product data from API
 let url2 = "https://fakestoreapi.in/api/products";
@@ -100,6 +102,7 @@ function updateCart() {
   const itemCountDisplay = document.getElementById("itemCount");
   const vatDisplay = document.getElementById("vat");
   const totalPrice = document.getElementById("total");
+  const discountAmountDisplay = document.getElementById("discountAmount");
   cartItemsList.innerHTML = "";
 
   subtotal = 0;
@@ -128,12 +131,13 @@ function updateCart() {
   });
 
   vat = subtotal * 0.1; // VAT = 10% of subtotal
-  total = subtotal + vat;
+  total = subtotal + vat - discount; // Apply discount to total
 
   // Update the UI with the calculated values
   subtotalPrice.textContent = subtotal.toFixed(2);
   vatDisplay.textContent = vat.toFixed(2);
   totalPrice.textContent = total.toFixed(2);
+  discountAmountDisplay.textContent = discount.toFixed(2);
   itemCountDisplay.textContent = itemCount;
 }
 
@@ -173,7 +177,27 @@ function checkout() {
     alert("Your cart is empty. Add items before checking out.");
     return;
   }
+
+  // Show confirmation message
   alert(`Proceeding to checkout with total $${total.toFixed(2)}`);
+
+  // Reset cart and all values
+  cart = []; // Clear the cart
+  subtotal = 0;
+  itemCount = 0;
+  vat = 0;
+  total = 0;
+  discount = 0;
+  appliedPromoCode = null; // Reset promo code
+
+  // Update the UI to reflect the reset values
+  updateCart();
+
+  // Clear the promo code input and message
+  const promoCodeInput = document.getElementById("promoCode");
+  const promoCodeMessage = document.getElementById("promoCodeMessage");
+  promoCodeInput.value = ""; // Clear the input field
+  promoCodeMessage.textContent = ""; // Clear the message
 }
 
 // Show toast notification
@@ -183,4 +207,36 @@ function showToast() {
   setTimeout(() => {
     toast.classList.add("hidden");
   }, 3000);
+}
+
+// Apply promo code
+function applyPromoCode() {
+  const promoCodeInput = document.getElementById("promoCode");
+  const promoCodeMessage = document.getElementById("promoCodeMessage");
+  const code = promoCodeInput.value.trim();
+
+  if (appliedPromoCode === code) {
+    promoCodeMessage.textContent = "Promo code already applied.";
+    promoCodeMessage.style.color = "red";
+    return;
+  }
+
+  if (code === "ostad10") {
+    discount = subtotal * 0.1; // 10% discount
+    appliedPromoCode = code;
+    promoCodeMessage.textContent = "10% discount applied!";
+    promoCodeMessage.style.color = "green";
+  } else if (code === "ostad5") {
+    discount = subtotal * 0.05; // 5% discount
+    appliedPromoCode = code;
+    promoCodeMessage.textContent = "5% discount applied!";
+    promoCodeMessage.style.color = "green";
+  } else {
+    discount = 0;
+    appliedPromoCode = null;
+    promoCodeMessage.textContent = "Invalid promo code.";
+    promoCodeMessage.style.color = "red";
+  }
+
+  updateCart(); // Recalculate totals
 }
